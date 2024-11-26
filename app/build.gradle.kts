@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.jetbrains.kotlin.android)
-    id("org.jetbrains.kotlin.plugin.compose")
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -20,7 +21,14 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig = true
+    }
+
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://rickandmortyapi.com/api/\"")
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -50,23 +58,45 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.runtime)
 
-//Nav - https://developer.android.com/develop/ui/compose/navigation
+    implementation(libs.coil.compose)
+
+    //Serialization https://kotlinlang.org/docs/serialization.html#formats
+    implementation(libs.kotlinx.serialization.json)
+
+    //Compose Nav https://developer.android.com/develop/ui/compose/navigation
     implementation(libs.androidx.navigation.compose)
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
+    // Koin
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+
+    implementation(libs.converter.gson)
+
+    implementation(libs.squeareup.okhttp)
+    implementation(libs.squeareup.logginginterceptor)
+    implementation(libs.squeareup.retrofit)
+
     implementation(platform(libs.androidx.compose.bom))
+
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.material3)
+
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

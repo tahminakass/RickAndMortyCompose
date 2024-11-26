@@ -1,5 +1,6 @@
 package com.example.rickandmortycompose.ui.activity
 
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,12 +21,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.rickandmortycompose.R
+import com.example.rickandmortycompose.ui.screens.character.CharacterScreen
+import com.example.rickandmortycompose.ui.screens.episode.EpisodeScreen
 import com.example.rickandmortycompose.ui.screens.Screens
+import com.example.rickandmortycompose.ui.screens.character.detail.DetailCharacterScreen
+import com.example.rickandmortycompose.ui.screens.episode.detail.DetailEpisodeScreen
 import com.example.rickandmortycompose.ui.theme.RickAndMortyComposeTheme
 
 class MainActivity : ComponentActivity() {
@@ -33,6 +40,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RickAndMortyComposeTheme {
+                RickAndMortyApp()
             }
         }
     }
@@ -41,8 +49,7 @@ class MainActivity : ComponentActivity() {
     private fun RickAndMortyApp() {
         val navController = rememberNavController()
 
-        Scaffold(modifier = Modifier
-            .fillMaxSize(),
+        Scaffold(modifier = Modifier.fillMaxSize(),
             topBar = {
                 TopBar()
             },
@@ -51,15 +58,36 @@ class MainActivity : ComponentActivity() {
             }) { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = Screens.EpisodeScreen.route,
-                modifier = Modifier
-                    .padding(innerPadding)
+                startDestination = Screens.CharacterScreen.route,
+                modifier = Modifier.padding(innerPadding)
             ) {
-                composable(Screens.EpisodeScreen.route) {
+                composable(Screens.CharacterScreen.route) {
+                    CharacterScreen(toDetailCharacterScreen = { characterId ->
+                        navController.navigate("DetailCharacterScreen/$characterId")
+                    })
                 }
+                composable(Screens.EpisodeScreen.route) {
+                    EpisodeScreen(toDetailEpisodeScreen = { episodeId ->
+                        navController.navigate("DetailEpisodeScreen/$episodeId")
+                    })
+                }
+                composable(
+                    route = Screens.DetailCharacterScreen.route,
+                    arguments = listOf(navArgument(name = "characterId") { type = NavType.IntType })
+                ) { backStackEntry ->
+                    val characterId = backStackEntry.arguments?.getInt("characterId") ?: 0
+                    DetailCharacterScreen(id = characterId)
+                }
+                composable(
+                    route = Screens.DetailEpisodeScreen.route,
+                    arguments = listOf(navArgument(name = "episodeId") { type = NavType.IntType })
+                ) { backStackEntry ->
+                    val episodeId = backStackEntry.arguments?.getInt("episodeId") ?: 0
+                    DetailEpisodeScreen(id = episodeId)
                 }
             }
         }
+
     }
 }
 
@@ -67,10 +95,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TopBar() {
     CenterAlignedTopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(Color.Blue),
+        colors = TopAppBarDefaults.topAppBarColors(Color.Gray),
         title = {
             Text(
-                fontSize = 24.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 text = "Rick and Morty"
             )
@@ -84,15 +112,16 @@ fun BottomBar(navController: NavController) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
     BottomAppBar(
-        containerColor = Color.Yellow,
-        contentColor = Color.Cyan
+        containerColor = Color.Gray,
+        contentColor = Color.Green
     ) {
         items.forEach { screen ->
             NavigationBarItem(
                 icon = {
                     Icon(
                         painter = painterResource(
-                            id = if (screen == Screens.CharacterScreen
+                            id = if (screen == Screens.CharacterScreen) R.drawable.ic_character
+                            else R.drawable.ic_episode
                         ),
                         contentDescription = screen.route
                     )
@@ -116,4 +145,5 @@ fun BottomBar(navController: NavController) {
             )
         }
     }
+
 }
