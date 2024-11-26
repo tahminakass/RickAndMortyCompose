@@ -1,12 +1,17 @@
 package com.example.rickandmortycompose.ui.screens.character.detail
 
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,12 +19,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
+import com.example.rickandmortycompose.R
 
 import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.compose.koinViewModel
@@ -33,15 +41,20 @@ fun DetailCharacterScreen(
     LaunchedEffect(Dispatchers.IO) {
         viewModel.getSingleCharacter(id)
     }
-    character?.let {
-        SingleCharacter(
-            gender = it.gender,
-            name = it.name,
-            image = it.image,
-            status = it.status,
-            species = it.species,
-            location = it.location.name
-        )
+
+    if (character == null) {
+        CircularProgressIndicator()
+    } else {
+        character?.let {
+            SingleCharacter(
+                gender = it.gender,
+                name = it.name,
+                image = it.image,
+                status = it.status,
+                species = it.species,
+                location = it.location.name
+            )
+        }
     }
 }
 
@@ -57,14 +70,23 @@ fun SingleCharacter(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp),
+            .padding(8.dp)
+            .background(
+                color = colorResource(R.color.purple_200),
+                shape = RoundedCornerShape(12.dp)
+            ),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
             modifier = Modifier
                 .size(200.dp)
-                .padding(4.dp),
+                .padding(4.dp)
+                .clip(shape = RoundedCornerShape(4.dp))
+                .border(
+                    border = BorderStroke(1.dp, color = Color.Blue),
+                    shape = RoundedCornerShape(2.dp)
+                ),
             model = image,
             contentDescription = "image of character"
         )
@@ -101,4 +123,3 @@ fun SingleCharacter(
         )
     }
 }
-

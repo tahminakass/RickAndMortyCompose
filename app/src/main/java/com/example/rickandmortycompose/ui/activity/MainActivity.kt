@@ -4,6 +4,7 @@ package com.example.rickandmortycompose.ui.activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.BottomAppBar
@@ -27,6 +28,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import coil3.compose.AsyncImage
 import com.example.rickandmortycompose.R
 import com.example.rickandmortycompose.ui.screens.character.CharacterScreen
 import com.example.rickandmortycompose.ui.screens.episode.EpisodeScreen
@@ -48,46 +50,59 @@ class MainActivity : ComponentActivity() {
     @Composable
     private fun RickAndMortyApp() {
         val navController = rememberNavController()
-
-        Scaffold(modifier = Modifier.fillMaxSize(),
-            topBar = {
-                TopBar()
-            },
-            bottomBar = {
-                BottomBar(navController)
-            }) { innerPadding ->
-            NavHost(
-                navController = navController,
-                startDestination = Screens.CharacterScreen.route,
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                composable(Screens.CharacterScreen.route) {
-                    CharacterScreen(toDetailCharacterScreen = { characterId ->
-                        navController.navigate("DetailCharacterScreen/$characterId")
-                    })
-                }
-                composable(Screens.EpisodeScreen.route) {
-                    EpisodeScreen(toDetailEpisodeScreen = { episodeId ->
-                        navController.navigate("DetailEpisodeScreen/$episodeId")
-                    })
-                }
-                composable(
-                    route = Screens.DetailCharacterScreen.route,
-                    arguments = listOf(navArgument(name = "characterId") { type = NavType.IntType })
-                ) { backStackEntry ->
-                    val characterId = backStackEntry.arguments?.getInt("characterId") ?: 0
-                    DetailCharacterScreen(id = characterId)
-                }
-                composable(
-                    route = Screens.DetailEpisodeScreen.route,
-                    arguments = listOf(navArgument(name = "episodeId") { type = NavType.IntType })
-                ) { backStackEntry ->
-                    val episodeId = backStackEntry.arguments?.getInt("episodeId") ?: 0
-                    DetailEpisodeScreen(id = episodeId)
+        Box() {
+            AsyncImage(
+                modifier = Modifier.fillMaxSize(),
+                model = R.drawable.bg_content,
+                contentDescription = "background color"
+            )
+            Scaffold(modifier = Modifier.fillMaxSize(),
+                topBar = {
+                    TopBar()
+                },
+                bottomBar = {
+                    BottomBar(navController)
+                }) { innerPadding ->
+                NavHost(
+                    navController = navController,
+                    startDestination = Screens.CharacterScreen.route,
+                    modifier = Modifier.padding(innerPadding)
+                ) {
+                    composable(Screens.CharacterScreen.route) {
+                        CharacterScreen(toDetailCharacterScreen = { characterId ->
+                            navController.navigate("DetailCharacterScreen/$characterId")
+                        })
+                    }
+                    composable(Screens.EpisodeScreen.route) {
+                        EpisodeScreen(toDetailEpisodeScreen = { episodeId ->
+                            navController.navigate("DetailEpisodeScreen/$episodeId")
+                        })
+                    }
+                    composable(
+                        route = Screens.DetailCharacterScreen.route,
+                        arguments = listOf(navArgument(name = "characterId") {
+                            type = NavType.IntType
+                        })
+                    ) { backStackEntry ->
+                        val characterId = backStackEntry.arguments?.getInt("characterId") ?: 0
+                        DetailCharacterScreen(id = characterId)
+                    }
+                    composable(
+                        route = Screens.DetailEpisodeScreen.route,
+                        arguments = listOf(navArgument(name = "episodeId") {
+                            type = NavType.IntType
+                        })
+                    ) { backStackEntry ->
+                        val episodeId = backStackEntry.arguments?.getInt("episodeId") ?: 0
+                        DetailEpisodeScreen(
+                            id = episodeId,
+                            toDetailCharacterScreen = { characterId ->
+                                navController.navigate("DetailCharacterScreen/$characterId")
+                            })
+                    }
                 }
             }
         }
-
     }
 }
 

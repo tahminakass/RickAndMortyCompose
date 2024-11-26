@@ -1,5 +1,6 @@
 package com.example.rickandmortycompose.data.repository
 
+import com.example.rickandmortycompose.data.model.CharacterResponse
 import com.example.rickandmortycompose.data.model.EpisodeResponse
 import com.example.rickandmortycompose.data.network.api.EpisodeApiService
 
@@ -31,6 +32,17 @@ class EpisodeRepository(
             }
         } catch (ex: Exception) {
             null
+        }
+    }
+
+    suspend fun getEpisodeCharacters(ids: List<Int>): List<CharacterResponse> {
+        return try {
+            val responses = ids.map { id ->
+                episodeApiService.getEpisodesCharacters(id)
+            }
+            responses.mapNotNull { it.body() }
+        } catch (e: Exception) {
+            emptyList()
         }
     }
 }

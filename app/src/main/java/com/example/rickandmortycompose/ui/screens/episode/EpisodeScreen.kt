@@ -34,24 +34,26 @@ fun EpisodeScreen(
     LaunchedEffect(Dispatchers.IO) {
         viewModel.getAllEpisodes()
     }
-    Log.d("EpisodeScreen", "Fetched episodes: $episodes")
 
-    LazyColumn {
-        items(episodes.size) { index ->
-            val item = episodes[index]
-            EpisodeItem(
-                episode = item.episode,
-                name = item.name,
-                airDate = item.airDate,
-                onItemClick = {
-                    toDetailEpisodeScreen(item.id)
-                }
-            )
-            Log.d("EpisodeScreen", "Fetched episodes: $episodes")
+    if (episodes.isEmpty()) {
+        CustomLinearProgressBar()
+    } else {
+        LazyColumn {
+            items(episodes.size) { index ->
+                val item = episodes[index]
+                EpisodeItem(
+                    episode = item.episode,
+                    name = item.name,
+                    airDate = item.airDate,
+                    onItemClick = {
+                        toDetailEpisodeScreen(item.id)
+                    }
+                )
+                Log.d("EpisodeScreen", "Fetched episodes: $episodes")
+            }
         }
     }
 }
-
 
 @Composable
 fun EpisodeItem(
