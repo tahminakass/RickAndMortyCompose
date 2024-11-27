@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.rickandmortycompose.ui.activity.CustomLinearProgressBar
 import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.compose.koinViewModel
 

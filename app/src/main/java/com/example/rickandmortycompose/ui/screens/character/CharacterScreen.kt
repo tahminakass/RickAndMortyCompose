@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.AsyncImage
 import com.example.rickandmortycompose.R
+import com.example.rickandmortycompose.ui.activity.CustomLinearProgressBar
 import kotlinx.coroutines.Dispatchers
 import org.koin.androidx.compose.koinViewModel
 

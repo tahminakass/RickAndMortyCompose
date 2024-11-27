@@ -4,22 +4,29 @@ package com.example.rickandmortycompose.ui.activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavType
@@ -95,7 +102,7 @@ class MainActivity : ComponentActivity() {
                     ) { backStackEntry ->
                         val episodeId = backStackEntry.arguments?.getInt("episodeId") ?: 0
                         DetailEpisodeScreen(
-                            id = episodeId,
+                            episodeId = episodeId,
                             toDetailCharacterScreen = { characterId ->
                                 navController.navigate("DetailCharacterScreen/$characterId")
                             })
@@ -160,5 +167,19 @@ fun BottomBar(navController: NavController) {
             )
         }
     }
+}
 
+@Composable
+fun CustomLinearProgressBar() {
+    Column (
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LinearProgressIndicator(
+            modifier = Modifier.width(120.dp),
+            color = colorResource(R.color.teal_200),
+            trackColor = colorResource(R.color.teal_700)
+        )
+    }
 }
