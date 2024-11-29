@@ -1,6 +1,5 @@
 package com.example.rickandmortycompose.ui.activity
 
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -12,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -61,9 +62,10 @@ class MainActivity : ComponentActivity() {
             AsyncImage(
                 modifier = Modifier.fillMaxSize(),
                 model = R.drawable.bg_content,
-                contentDescription = "background color"
+                contentDescription = "background color",
             )
-            Scaffold(modifier = Modifier.fillMaxSize(),
+            Scaffold(
+                containerColor = Color.Transparent,
                 topBar = {
                     TopBar()
                 },
@@ -117,11 +119,12 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun TopBar() {
     CenterAlignedTopAppBar(
-        colors = TopAppBarDefaults.topAppBarColors(Color.Gray),
+        colors = TopAppBarDefaults.topAppBarColors(colorResource(R.color.purple_500)),
         title = {
             Text(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
+                color = Color.White,
                 text = "Rick and Morty"
             )
         }
@@ -134,7 +137,7 @@ fun BottomBar(navController: NavController) {
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
 
     BottomAppBar(
-        containerColor = Color.Gray,
+        containerColor = colorResource(R.color.purple_500),
         contentColor = Color.Green
     ) {
         items.forEach { screen ->
@@ -150,6 +153,7 @@ fun BottomBar(navController: NavController) {
                 },
                 label = {
                     Text(
+                        color = Color.White,
                         text = if (screen == Screens.CharacterScreen) "Characters"
                         else "Episodes"
                     )
@@ -171,7 +175,7 @@ fun BottomBar(navController: NavController) {
 
 @Composable
 fun CustomLinearProgressBar() {
-    Column (
+    Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -182,4 +186,13 @@ fun CustomLinearProgressBar() {
             trackColor = colorResource(R.color.teal_700)
         )
     }
+}
+
+@Composable
+fun CustomCircularProgressBar() {
+    CircularProgressIndicator(
+        modifier = Modifier.width(40.dp),
+        color = colorResource(R.color.teal_200),
+        trackColor = colorResource(R.color.teal_700)
+    )
 }

@@ -133,7 +133,6 @@ fun SingleEpisode(
                         onItemClick = {
                             toDetailCharacterScreen(character.id)
                         }
-
                     )
                 }
             }

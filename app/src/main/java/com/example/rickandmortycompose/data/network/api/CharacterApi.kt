@@ -5,12 +5,15 @@ import com.example.rickandmortycompose.data.model.CharactersResultsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface CharacterApi {
 
     @GET("character")
-    suspend fun getAllCharacters(): Response<CharactersResultsResponse>
+    suspend fun getAllCharacters(
+        @Query("page") page: Int
+    ): CharactersResultsResponse
 
     @GET("character/{id}")
-    suspend fun getSingleCharacter(@Path("id") id : Int) : Response<CharacterResponse>
+    suspend fun getSingleCharacter(@Path("id") id: Int): Response<CharacterResponse>
 }

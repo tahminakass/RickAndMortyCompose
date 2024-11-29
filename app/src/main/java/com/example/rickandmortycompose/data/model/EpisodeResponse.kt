@@ -2,7 +2,9 @@ package com.example.rickandmortycompose.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class EpisodeResultsResponse(
+data class EpisodeResultResponse(
+    @SerializedName("info")
+    val pageInfo: PageInfo?,
     @SerializedName("results")
     val episodeResponse: List<EpisodeResponse>
 )

@@ -2,33 +2,35 @@ package com.example.rickandmortycompose.data.model
 
 import com.google.gson.annotations.SerializedName
 
-data class CharactersResultsResponse(
-    @SerializedName("results ")
-    val characterResponse : List<CharacterResponse>
+data class CharacterResultsResponse(
+    @SerializedName("info")
+    val pageInfo: PageInfo?,
+    @SerializedName("results")
+    val characterResponse: List<CharacterResponse>?
 )
 
 data class CharacterResponse(
     @SerializedName("id")
-    val id : Int,
+    val id: Int,
     @SerializedName("name")
-    val name : String,
+    val name: String,
     @SerializedName("status")
-    val status : String,
+    val status: String,
     @SerializedName("species")
-    val species : String,
+    val species: String,
     @SerializedName("type")
-    val type : String,
+    val type: String,
     @SerializedName("gender")
-    val gender : String,
+    val gender: String,
     @SerializedName("image")
-    val image : String,
+    val image: String,
     @SerializedName("location")
     val location: Location
 )
 
 data class Location(
     @SerializedName("name")
-    val name : String,
+    val name: String,
     @SerializedName("url")
-    val url : String
+    val uri: String
 )

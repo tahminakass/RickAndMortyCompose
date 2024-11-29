@@ -63,6 +63,10 @@ dependencies {
 
     implementation(libs.coil.compose)
 
+    //Paging 3 https://developer.android.com/topic/libraries/architecture/paging/v3-overview?hl=ru
+    implementation(libs.androidx.paging.runtime)
+    implementation(libs.androidx.paging.compose)
+
     //Serialization https://kotlinlang.org/docs/serialization.html#formats
     implementation(libs.kotlinx.serialization.json)
 
